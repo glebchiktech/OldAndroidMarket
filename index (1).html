@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="ru">
+<html lang="ru"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Android Market v2.3.6 (Gingerbread UI)</title>
+    <style>
+        /* Стили по умолчанию: Android 2.3.6 Gingerbread */
+        :root {
+            --market-bg: #141414;
+            --android-green: #a4c639;
+            --android-green-bright: #b5e61d;
+            --header-bg: #000000;
+            --text-main: #ffffff;
+            --text-sub: #888888;
+            --card-bg: linear-gradient(to bottom, #252525 0%, #1e1e1e 100%);
+            --card-border: #333333;
+            --tab-active: linear-gradient(to bottom, #3c3c3c 0%, #222222 100%);
+            --tab-inactive: linear-gradient(to bottom, #252525 0%, #151515 100%);
+            --tab-border: #111111;
+            --btn-bg: linear-gradient(to bottom, #444444 0%, #222222 100%);
+            --btn-border: #555555;
+            --btn-text: #ffffff;
+            --input-bg: #222222;
+            --input-border: #444444;
+            --input-text: #ffffff;
+        }
+
+        /* ТЕМА: Android 4.4 Holo */
+        [data-theme="holo"] {
+            --market-bg: #e2e2e2;
+            --android-green: #0099cc;
+            --android-green-bright: #33b5e5;
+            --header-bg: linear-gradient(to bottom, #3c3c3c 0%, #1a1a1a 100%);
+            --text-main: #222222;
+            --text-sub: #666666;
+            --card-bg: linear-gradient(to bottom, #ffffff 0%, #f9f9f9 100%);
+            --card-border: #c5c5c5;
+            --tab-active: linear-gradient(to bottom, #222222 0%, #333333 100%);
+            --tab-inactive: linear-gradient(to bottom, #444444 0%, #353535 100%);
+            --tab-border: #222222;
+            --btn-bg: linear-gradient(to bottom, #77aa00 0%, #558800 100%);
+            --btn-border: #447700;
+            --btn-text: #ffffff;
+            --input-bg: rgba(0, 0, 0, 0.4);
+            --input-border: #555555;
+            --input-text: #ffffff;
+        }
+
+        /* ТЕМА: Светлая */
+        [data-theme="light"] {
+            --market-bg: #f5f5f5;
+            --android-green: #3d8b3d;
+            --android-green-bright: #4caf50;
+            --header-bg: #333333;
+            --text-main: #111111;
+            --text-sub: #777777;
+            --card-bg: #ffffff;
+            --card-border: #dddddd;
+            --tab-active: #ffffff;
+            --tab-inactive: #e0e0e0;
+            --tab-border: #cccccc;
+            --btn-bg: linear-gradient(to bottom, #f0f0f0 0%, #dcdcdc 100%);
+            --btn-border: #ababab;
+            --btn-text: #333333;
+            --input-bg: #ffffff;
+            --input-border: #cccccc;
+            --input-text: #111111;
+        }
+
+        /* ТЕМА: 4PDA Тёмная */
+        [data-theme="4pda"] {
+            --market-bg: #111c24;
+            --android-green: #477496;
+            --android-green-bright: #6294b8;
+            --header-bg: #182835;
+            --text-main: #eef2f5;
+            --text-sub: #7b93a6;
+            --card-bg: #162430;
+            --card-border: #22374a;
+            --tab-active: #1c2e3d;
+            --tab-inactive: #13202b;
+            --tab-border: #0d161e;
+            --btn-bg: linear-gradient(to bottom, #3b607d 0%, #294459 100%);
+            --btn-border: #477496;
+            --btn-text: #ffffff;
+            --input-bg: #0d161e;
+            --input-border: #22374a;
+            --input-text: #eef2f5;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--market-bg);
+            margin: 0; padding: 0;
+            color: var(--text-main);
+            -webkit-user-select: none; user-select: none;
+        }
+
+        header {
+            background: var(--header-bg);
+            padding: 8px 12px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 3px solid var(--android-green);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5); gap: 10px;
+        }
+
+        .brand { display: flex; align-items: center; gap: 8px; }
+
+        .market-logo-bag {
+            width: 24px; height: 24px; background: var(--android-green);
+            clip-path: polygon(20% 30%, 80% 30%, 100% 100%, 0% 100%);
+            position: relative; border-radius: 2px;
+        }
+        .market-logo-bag::before {
+            content: ''; position: absolute; width: 10px; height: 6px;
+            border: 2px solid var(--android-green); border-bottom: none;
+            top: -6px; left: 5px; border-radius: 5px 5px 0 0;
+        }
+
+        header h1 { margin: 0; font-size: 16px; font-weight: bold; color: #ffffff; text-transform: lowercase; }
+        header h1 span { color: var(--android-green); }
+
+        .search-container { flex-grow: 1; max-width: 160px; position: relative; }
+        .search-input {
+            width: 100%; padding: 5px 24px 5px 8px; font-size: 12px;
+            background: var(--input-bg); border: 1px solid var(--input-border);
+            border-radius: 3px; color: var(--input-text); outline: none; box-sizing: border-box;
+        }
+
+        .auth-block { display: flex; align-items: center; gap: 6px; }
+        .user-avatar {
+            width: 28px; height: 28px; border-radius: 50%; background: #4a5a6a;
+            display: flex; align-items: center; justify-content: center; font-size: 15px;
+            border: 1px solid #6b7b8b; cursor: pointer;
+        }
+        .username-display {
+            font-size: 12px; font-weight: bold; color: var(--android-green-bright);
+            max-width: 70px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer;
+        }
+
+        .market-tabs { display: flex; background-color: #000000; }
+        .tab {
+            flex: 1; text-align: center; padding: 12px 0; color: #999999;
+            font-size: 12px; font-weight: bold; cursor: pointer;
+            background: var(--tab-inactive); border-right: 1px solid var(--tab-border);
+        }
+        .tab.active { color: #ffffff; background: var(--tab-active); border-bottom: 3px solid var(--android-green); }
+
+        .market-container { max-width: 650px; margin: 10px auto; padding: 0 10px; }
+
+        .tg-banner {
+            background: linear-gradient(to bottom, #2996ce 0%, #1f77a3 100%);
+            border: 1px solid #1a5e82; border-radius: 4px; padding: 10px;
+            color: white; margin-bottom: 12px; text-decoration: none; display: block;
+        }
+
+        .market-banner { background: linear-gradient(to bottom, #333333 0%, #222222 100%); border: 1px solid #444; border-radius: 4px; padding: 12px; color: #fff; margin-bottom: 12px; }
+        .market-banner h2 { margin: 0 0 4px 0; font-size: 15px; color: var(--android-green); }
+        .market-banner p { margin: 0; font-size: 12px; color: #ccc; }
+
+        /* Категории */
+        .category-buttons { display: flex; gap: 10px; margin-bottom: 12px; }
+        .cat-btn {
+            flex: 1; padding: 12px; font-size: 13px; font-weight: bold; text-align: center; color: #ffffff;
+            background: linear-gradient(to bottom, #3a3a3a 0%, #1a1a1a 100%); border: 2px solid #444;
+            border-radius: 6px; cursor: pointer; text-transform: uppercase;
+        }
+        .cat-btn.active { background: linear-gradient(to bottom, #222 0%, #000 100%); border-color: var(--android-green); color: var(--android-green); }
+
+        .market-list-category { display: none; }
+        .market-list-category.active { display: block; }
+
+        /* Карточки софта */
+        .app-card { background: var(--card-bg); padding: 12px; border: 1px solid var(--card-border); border-radius: 4px; margin-bottom: 10px; }
+        .app-main-info { display: flex; align-items: flex-start; }
+        .app-icon {
+            width: 48px; height: 48px; border-radius: 4px; display: flex; align-items: center; justify-content: center;
+            font-size: 22px; font-weight: bold; border: 1px solid rgba(0,0,0,0.4); background: #444; color: white; margin-right: 12px;
+        }
+        .icon-yandex { background: #ff0000; }
+        .icon-4pda { background: #1e3a52; }
+        .icon-chrome { background: #f44336; }
+        .icon-tiktok { background: #000000; color: #00f2fe; text-shadow: 1px 1px #fe2c55; }
+        .icon-birds { background: #d32f2f; }
+        .icon-flappy { background: #ff9800; }
+        .icon-doodle { background: #8bc34a; }
+        .icon-ctr { background: #2e7d32; }
+        .icon-asphalt { background: #1b5e20; }
+
+        .app-details { flex-grow: 1; }
+        .app-title { margin: 0 0 2px 0; font-size: 15px; color: var(--text-main); font-weight: bold; }
+        .app-developer { color: var(--text-sub); margin: 0 0 4px 0; font-size: 11px; }
+
+        .download-btn {
+            display: inline-block; background: var(--btn-bg); color: var(--btn-text); padding: 5px 14px;
+            font-size: 11px; font-weight: bold; text-decoration: none; border-radius: 3px; border: 1px solid var(--btn-border);
+            text-transform: uppercase; cursor: pointer;
+        }
+
+        .app-description { border-top: 1px dashed var(--card-border); padding-top: 6px; margin-top: 8px; font-size: 12px; color: var(--text-sub); }
+
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+
+        /* Панель разработчика */
+        .publish-container { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 4px; padding: 15px; margin-bottom: 15px; }
+        .publish-container h3 { margin: 0 0 10px 0; font-size: 15px; color: var(--android-green); }
+        .market-input, .theme-select {
+            width: 100%; box-sizing: border-box; background: var(--input-bg); color: var(--input-text);
+            border: 1px solid var(--input-border); padding: 6px; font-size: 12px; border-radius: 3px; outline: none; margin-bottom: 8px;
+        }
+        .settings-btn, .action-btn {
+            background: var(--btn-bg); color: var(--btn-text); border: 1px solid var(--btn-border);
+            padding: 6px 12px; font-size: 11px; border-radius: 3px; cursor: pointer; font-weight: bold;
+        }
+
+        /* Модалки */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 15px; }
+        .modal-window { background: #222222; border: 2px solid var(--android-green); border-radius: 4px; width: 100%; max-width: 400px; color: #fff; }
+        .modal-header { background: #000; padding: 10px; font-size: 14px; font-weight: bold; border-bottom: 1px solid var(--android-green); color: var(--android-green); }
+        .modal-body { padding: 12px; font-size: 12px; }
+        .modal-footer { padding: 8px; text-align: right; border-top: 1px solid #333; background: #151515; }
+        #no-results-msg { display: none; text-align: center; padding: 20px; color: var(--text-sub); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <div class="market-logo-bag"></div>
+            <h1>android<span>market</span></h1>
+        </div>
+        <div class="search-container">
+            <input type="text" id="market-search" class="search-input" placeholder="Поиск..." oninput="searchApps()">
+        </div>
+        <div class="auth-block">
+            <span class="username-display" id="user-display-name" onclick="openAuthModal()">Глеб</span>
+            <div class="user-avatar" id="user-avatar-btn" onclick="openAuthModal()">👤</div>
+        </div>
+    </header>
+
+    <div class="market-tabs">
+        <div class="tab active" id="tab-apps" onclick="switchTab('apps', this)">Приложения</div>
+        <div class="tab" onclick="switchTab('downloads', this)">Загрузки</div>
+        <div class="tab" onclick="switchTab('settings', this)">Настройки</div>
+    </div>
+
+    <main class="market-container">
+
+        <a href="https://t.me/glebssonchikbyr" target="_blank" class="tg-banner">
+            <h3 style="margin:0; font-size:14px;">📢 Наш Telegram-канал Glebssonchik_Phone</h3>
+            <p style="margin:3px 0 0 0; font-size:11px; color:#d1efff;">Ретро-софт и кастомные моды здесь!</p>
+        </a>
+
+        <!-- СЕКЦИЯ С КАТАЛОГОМ -->
+        <div id="section-apps" class="content-section active">
+
+            <!-- ПАНЕЛЬ РАЗРАБОТЧИКА (Видна после логина) -->
+            <div id="developer-panel" class="publish-container" style="display: block;">
+                <h3>📦 Панель разработчика: Опубликовать софт</h3>
+                <input type="text" id="new-app-title" class="market-input" placeholder="Название софта">
+                <input type="text" id="new-app-dev" class="market-input" placeholder="Автор / Разработчик">
+                <input type="text" id="new-app-url" class="market-input" placeholder="Ссылка на Google Диск">
+                <input type="text" id="new-app-desc" class="market-input" placeholder="Описание приложения">
+                <input type="text" id="new-app-icon" class="market-input" placeholder="Эмодзи вместо иконки (например: 🕹️)">
+                
+                <label style="font-size:11px; display:block; margin-bottom:4px;">Выберите категорию софта:</label>
+                <select id="new-app-category" class="theme-select" style="margin-bottom:10px;">
+                    <option value="programs">📱 Программы</option>
+                    <option value="games">🎮 Игры</option>
+                </select>
+
+                <div style="display:flex; justify-content: space-between; align-items:center;">
+                    <button class="action-btn" onclick="publishApp()">Опубликовать</button>
+                    <button class="settings-btn" id="save-file-btn" onclick="saveCodeToFile()" style="display: inline-block; background: linear-gradient(rgb(211, 47, 47), rgb(154, 0, 7)); border-color: rgb(107, 0, 0);">Скачать обновленный HTML</button>
+                </div>
+            </div>
+            
+            <div class="market-banner" id="welcome-banner">
+                <h2>Добро пожаловать в ретро Маркет!</h2>
+                <p>Архивные игры и классический софт для винтажных Android-смартфонов.</p>
+            </div>
+
+            <!-- Главные кнопки переключения вкладок: Программы и Игры -->
+            <div class="category-buttons" id="main-category-block">
+                <button class="cat-btn" id="cat-btn-programs" onclick="switchCategory('programs')">📱 Программы</button>
+                <button class="cat-btn active" id="cat-btn-games" onclick="switchCategory('games')">🎮 Игры</button>
+            </div>
+
+            <div id="no-results-msg">Ничего не найдено.</div>
+
+            <!-- КАТЕГОРИЯ: ПРОГРАММЫ -->
+            <div id="category-programs" class="market-list-category">
+                <div id="dynamic-programs-list"><div class="app-card">
+                    <div class="app-main-info">
+                        <div class="app-icon">📦</div>
+                        <div class="app-details">
+                            <h2 class="app-title">TikTok Lite</h2>
+                            <div class="app-developer">TikTok Ltd • Пользовательский мод</div>
+                            <a href="https://drive.google.com/file/d/1XJTvFZJc_Q0Pukd85mcRhoFJrc2Zburt/view?usp=sharing" target="_blank" class="download-btn">Установить</a>
+                        </div>
+                    </div>
+                    <div class="app-description"><strong>Описание:</strong> приложение где можно смотреть короткие видео</div>
+                </div></div>
+
+                <!-- Яндекс Браузер -->
+                <div class="app-card">
+                    <div class="app-main-info">
+                        <div class="app-icon icon-yandex">Я</div>
+                        <div class="app-details">
+                            <h2 class="app-title">Яндекс Браузер</h2>
+                            <div class="app-developer">Yandex Apps • Браузеры</div>
+                            <a href="https://drive.google.com/file/d/1jPII-bNMfvXlDwW8LzRc-NuXacAGACYZ/view?usp=sharing" target="_blank" class="download-btn">Установить</a>
+                        </div>
+                    </div>
+                    <div class="app-description"><strong>Описание:</strong> Легкий и стабильный классический браузер.</div>
+                </div>
+
+                <!-- 4PDA -->
+                <div class="app-card">
+                    <div class="app-main-info">
+                        <div class="app-icon icon-4pda">📱</div>
+                        <div class="app-details">
+                            <h2 class="app-title">4PDA</h2>
+                            <div class="app-developer">4PDA Client • Программы</div>
+                            <a href="https://drive.google.com/file/d/1XYzEi9nApeC0yX0EQjhyO4M7IrTgG1Mi/view?usp=drive_link" target="_blank" class="download-btn">Установить</a>
+                        </div>
+                    </div>
+                    <div class="app-description"><strong>Описание:</strong> Официальный клиент главного форума о смартфонах и прошивках.</div>
+                </div>
+
+                <!-- TikTok Lite -->
+                <div class="app-card">
+                    <div class="app-main-info">
+                        <div class="app-icon icon-tiktok">🎵</div>
+                        <div class="app-details">
+                            <h2 class="app-title">TikTok Lite</h2>
+                            <div class="app-developer">TikTok Inc. • Социальные</div>
+                            <a href="#" class="download-btn" onclick="alert('Сюда добавим ссылку на твой APK TikTok!'); return false;">Скоро</a>
+                        </div>
+                    </div>
+                    <div class="app-description"><strong>Описание:</strong> Облегченная версия платформы коротких видеороликов.</div>
+                </div>
+
+                <!-- Google Chrome -->
+                <div class="app-card">
+                    <div class="app-main-info">
+                        <div class="app-icon icon-chrome">🌐</div>
+                        <div class="app-details">
+                            <h2 class="app-title">Google Chrome</h2>
+                            <div class="app-developer">Google Inc. • Браузеры</div>
+                            <a href="https://drive.google.com/file/d/1E42luN1WOazdl16Ly_0v73N9mnpX74DR/view?usp=drive_link" target="_blank" class="download-btn">Установить</a>
+                        </div>
+                    </div>
+                    <div class="app-description"><strong>Описание:</strong> Старая добрая ретро-версия браузера Chrome.</div>
+                </div>
+            </div>
+
+            <!-- КАТЕГОРИЯ: ИГРЫ -->
+            <div id="category-games" class="market-list-category active">
+                <div id="dynamic-games-list"><div class="app-card">
+                    <div class="app-main-info">
+                        <div class="app-icon">📦</div>
+                        <div class="app-details">
+                            <h2 class="app-title">Doodle Jump</h2>
+                            <div class="app-developer">Lima Sky • Пользовательский мод</div>
+                            <a href="https://drive.google.com/file/d/1aiiEUMtyNuL9aJ6h9dpRmwGewx-D7K-I/view?usp=sharing" target="_blank" class="download-btn">Установить</a>
+                        </div>
+                    </div>
+                    <div class="app-description"><strong>Описание:</strong> игра где надо прыгать на платформы преодаливая препятствие</div>
+                </div></div>
+
+                <!-- Angry Birds -->
+                <div class="app-card">
+                    <div class="app-main-info">
+                        <div class="app-icon icon-birds">🔴</div>
+                        <div class="app-details">
+                            <h2 class="app-title">Angry Birds</h2>
+                            <div class="app-developer">Rovio • Аркады</div>
+                            <a href="https://drive.google.com/file/d/1WcSLLHGT5cs_0bp_jihQV1ZCNUyE-bUH/view?usp=drive_link" target="_blank" class="download-btn">Установить</a>
+                        </div>
+                    </div>
+                    <div class="app-description"><strong>Описание:</strong> Классическое уничтожение свиней злыми птицами.</div>
+                </div>
+
+                <!-- Flappy Bird -->
+                <div class="app-card">
+                    <div class="app-main-info">
+                        <div class="app-icon icon-flappy">🐦</div>
+                        <div class="app-details">
+                            <h2 class="app-title">Flappy Bird</h2>
+                            <div class="app-developer">.GEARS • Аркады</div>
+                            <a href="https://drive.google.com/file/d/1cBtzO4ftRV_rIClrcigeymCYdexTN-YE/view?usp=sharing" target="_blank" class="download-btn">Установить</a>
+                        </div>
+                    </div>
+                    <div class="app-description"><strong>Описание:</strong> Легендарная хардкорная птица. Набери хотя бы 10 очков!</div>
+                </div>
+
+                <!-- Doodle Jump -->
+                <div class="app-card">
+                    <div class="app-main-info">
+                        <div class="app-icon icon-doodle">✍️</div>
+                        <div class="app-details">
+                            <h2 class="app-title">Doodle Jump</h2>
+                            <div class="app-developer">Lima Sky • Аркады</div>
+                            <a href="#" class="download-btn" onclick="alert('Сюда добавим ссылку на твой APK Doodle Jump!'); return false;">Скоро</a>
+                        </div>
+                    </div>
+                    <div class="app-description"><strong>Описание:</strong> Прыгай вверх по платформам, используя наклоны телефона.</div>
+                </div>
+
+                <!-- Cut the Rope -->
+                <div class="app-card">
+                    <div class="app-main-info">
+                        <div class="app-icon icon-ctr">✂️</div>
+                        <div class="app-details">
+                            <h2 class="app-title">Cut the Rope</h2>
+                            <div class="app-developer">ZeptoLab • Головоломки</div>
+                            <a href="https://drive.google.com/file/d/1gtLPyqrvUyQiCI5StPWb2UlB29ZP71Kw/view?usp=sharing" target="_blank" class="download-btn">Установить</a>
+                        </div>
+                    </div>
+                    <div class="app-description"><strong>Описание:</strong> Накорми Ам Няма леденцами в физической головоломке.</div>
+                </div>
+
+                <!-- Asphalt Nitro -->
+                <div class="app-card">
+                    <div class="app-main-info">
+                        <div class="app-icon icon-asphalt">🏎️</div>
+                        <div class="app-details">
+                            <h2 class="app-title">Asphalt Nitro 2 HD</h2>
+                            <div class="app-developer">Gameloft • Гонки</div>
+                            <a href="https://drive.google.com/file/d/1v0W2XWGqTt-LNDZfe7YuTGUQ8dhPjtDZ/view?usp=sharing" target="_blank" class="download-btn">Установить</a>
+                        </div>
+                    </div>
+                    <div class="app-description"><strong>Описание:</strong> Ретро-гонки со встроенным MoneyMod на бесконечные монеты.</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- СЕКЦИЯ ЗАГРУЗОК -->
+        <div id="section-downloads" class="content-section">
+            <div class="settings-list"><div class="settings-item"><div class="settings-text"><h4>История загрузок</h4><p>Все файлы успешно скачаны.</p></div></div></div>
+        </div>
+
+        <!-- СЕКЦИЯ НАСТРОЕК -->
+        <div id="section-settings" class="content-section">
+            <div class="settings-list">
+                <div class="settings-item">
+                    <div class="settings-text"><h4>Тема оформления</h4><p>Выберите скин интерфейса</p></div>
+                    <select id="theme-changer" class="theme-select" onchange="changeTheme(this.value)">
+                        <option value="gingerbread">Gingerbread (2.3.6)</option>
+                        <option value="holo">Holo UI (4.4)</option>
+                        <option value="light">Светлая</option>
+                        <option value="4pda">4PDA Тёмная</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- МОДАЛКА АВТОРИЗАЦИИ -->
+    <div class="modal-overlay" id="auth-modal" style="display: none;">
+        <div class="modal-window">
+            <div class="modal-header" id="modal-title-text">Вход в аккаунт</div>
+            <div class="modal-body" id="modal-body-content">
+                <input type="text" id="auth-login" class="market-input" placeholder="Никнейм">
+                <input type="password" id="auth-password" class="market-input" placeholder="Пароль">
+                <button class="action-btn" style="width:100%;" onclick="handleLogin()">Войти</button>
+                <p style="text-align:center; font-size:11px; margin-top:10px; color:#888;">Нет аккаунта? <span style="color:var(--android-green); cursor:pointer;" onclick="showRegisterView()">Создать</span></p>
+            </div>
+            <div class="modal-footer"><button class="settings-btn" onclick="closeAuthModal()">Закрыть</button></div>
+        </div>
+    </div>
+
+    <!-- ВШИТАЯ БАЗА ДАННЫХ ДЛЯ ДОБАВЛЕННЫХ ПРИЛОЖЕНИЙ -->
+    <script id="embedded-data">
+        var CUSTOM_APPS = [
+    {
+        "title": "TikTok Lite",
+        "developer": "TikTok Ltd",
+        "url": "https://drive.google.com/file/d/1XJTvFZJc_Q0Pukd85mcRhoFJrc2Zburt/view?usp=sharing",
+        "description": "приложение где можно смотреть короткие видео",
+        "icon": "📦",
+        "category": "programs"
+    },
+    {
+        "title": "Doodle Jump",
+        "developer": "Lima Sky",
+        "url": "https://drive.google.com/file/d/1aiiEUMtyNuL9aJ6h9dpRmwGewx-D7K-I/view?usp=sharing",
+        "description": "игра где надо прыгать на платформы преодаливая препятствие",
+        "icon": "📦",
+        "category": "games"
+    }
+];
+    </script>
+
+    <script>
+        var currentUser = null;
+
+        window.onload = function() {
+            const savedUser = localStorage.getItem('market_current_user');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                updateAuthUI();
+            }
+            
+            // УМНАЯ СИНХРОНИЗАЦИЯ С LOCALSTORAGE ПРИ ЗАПУСКЕ
+            syncAppsWithStorage();
+            renderCustomApps();
+        };
+
+        function switchTab(sectionId, tabEl) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('section-' + sectionId).classList.add('active');
+            tabEl.classList.add('active');
+        }
+
+        function switchCategory(catName) {
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.market-list-category').forEach(c => c.classList.remove('active'));
+            document.getElementById('cat-btn-' + catName).classList.add('active');
+            document.getElementById('category-' + catName).classList.add('active');
+        }
+
+        function changeTheme(themeName) {
+            if(themeName === 'gingerbread') { document.documentElement.removeAttribute('data-theme'); }
+            else { document.documentElement.setAttribute('data-theme', themeName); }
+        }
+
+        /* АУТЕНТИФИКАЦИЯ */
+        function openAuthModal() {
+            document.getElementById('auth-modal').style.display = 'flex';
+            if (currentUser) { showProfileView(); } else { showLoginView(); }
+        }
+        function closeAuthModal() { document.getElementById('auth-modal').style.display = 'none'; }
+
+        function showLoginView() {
+            document.getElementById('modal-title-text').innerText = "Вход в аккаунт";
+            document.getElementById('modal-body-content').innerHTML = `
+                <input type="text" id="auth-login" class="market-input" placeholder="Никнейм">
+                <input type="password" id="auth-password" class="market-input" placeholder="Пароль">
+                <button class="action-btn" style="width:100%;" onclick="handleLogin()">Войти</button>
+                <p style="text-align:center; font-size:11px; margin-top:10px; color:#888;">Нет аккаунта? <span style="color:var(--android-green); cursor:pointer;" onclick="showRegisterView()">Создать</span></p>
+            `;
+        }
+
+        function showRegisterView() {
+            document.getElementById('modal-title-text').innerText = "Регистрация профиля";
+            document.getElementById('modal-body-content').innerHTML = `
+                <input type="text" id="reg-login" class="market-input" placeholder="Придумайте никнейм">
+                <input type="password" id="reg-password" class="market-input" placeholder="Придумайте пароль">
+                <input type="text" id="reg-avatar" class="market-input" placeholder="Эмодзи для аватарки (например: 🤖)">
+                <button class="action-btn" style="width:100%;" onclick="handleRegister()">Зарегистрироваться</button>
+                <p style="text-align:center; font-size:11px; margin-top:10px; color:#888;">Уже есть аккаунт? <span style="color:var(--android-green); cursor:pointer;" onclick="showLoginView()">Войти</span></p>
+            `;
+        }
+
+        function showProfileView() {
+            document.getElementById('modal-title-text').innerText = "Ваш Профиль";
+            document.getElementById('modal-body-content').innerHTML = `
+                <div style="text-align:center;">
+                    <div style="font-size:36px;">${currentUser.avatar}</div>
+                    <h3 style="color:var(--android-green); margin:5px 0;">${currentUser.username}</h3>
+                    <p style="font-size:11px; color:#aaa; margin-bottom:15px;">Статус: Разработчик Маркета</p>
+                    <button class="settings-btn" style="background:crimson; width:100%;" onclick="handleLogout()">Выйти</button>
+                </div>
+            `;
+        }
+
+        function handleRegister() {
+            const login = document.getElementById('reg-login').value.trim();
+            const pass = document.getElementById('reg-password').value;
+            const avatar = document.getElementById('reg-avatar').value.trim() || '👤';
+            if(!login || !pass) { alert('Заполните все поля!'); return; }
+            currentUser = { username: login, password: pass, avatar: avatar };
+            localStorage.setItem('user_' + login, JSON.stringify(currentUser));
+            localStorage.setItem('market_current_user', JSON.stringify(currentUser));
+            updateAuthUI(); showProfileView();
+        }
+
+        function handleLogin() {
+            const login = document.getElementById('auth-login').value.trim();
+            const pass = document.getElementById('auth-password').value;
+            const saved = localStorage.getItem('user_' + login);
+            if(!saved) { alert('Пользователь не найден!'); return; }
+            const parsed = JSON.parse(saved);
+            if(parsed.password !== pass) { alert('Неверный пароль!'); return; }
+            currentUser = parsed;
+            localStorage.setItem('market_current_user', JSON.stringify(currentUser));
+            updateAuthUI(); showProfileView();
+        }
+
+        function handleLogout() {
+            currentUser = null; localStorage.removeItem('market_current_user');
+            updateAuthUI(); showLoginView();
+        }
+
+        function updateAuthUI() {
+            if (currentUser) {
+                document.getElementById('user-display-name').innerText = currentUser.username;
+                document.getElementById('user-avatar-btn').innerText = currentUser.avatar;
+                document.getElementById('developer-panel').style.display = 'block';
+                document.getElementById('save-file-btn').style.display = 'inline-block'; // Кнопка экспорта всегда доступна админу
+            } else {
+                document.getElementById('user-display-name').innerText = "Гость";
+                document.getElementById('user-avatar-btn').innerText = "👤";
+                document.getElementById('developer-panel').style.display = 'none';
+            }
+        }
+
+        /* ЛОГИКА СИНХРОНИЗАЦИИ И СБОРКИ ПРИЛОЖЕНИЙ */
+        function syncAppsWithStorage() {
+            // Подгружаем то, что было сохранено в браузере
+            const localSavedApps = localStorage.getItem('market_local_apps');
+            if (localSavedApps) {
+                const parsedLocal = JSON.parse(localSavedApps);
+                
+                // Объединяем массив из кода файла (CUSTOM_APPS) и массив из браузера
+                // Исключаем дубликаты по названию приложения (title)
+                parsedLocal.forEach(localApp => {
+                    const exists = CUSTOM_APPS.some(fileApp => fileApp.title.toLowerCase() === localApp.title.toLowerCase());
+                    if (!exists) {
+                        CUSTOM_APPS.push(localApp);
+                    }
+                });
+            }
+            // Обновляем LocalStorage финальным общим списком
+            localStorage.setItem('market_local_apps', JSON.stringify(CUSTOM_APPS));
+        }
+
+        function renderCustomApps() {
+            const progContainer = document.getElementById('dynamic-programs-list');
+            const gameContainer = document.getElementById('dynamic-games-list');
+            progContainer.innerHTML = ''; gameContainer.innerHTML = '';
+
+            CUSTOM_APPS.forEach(app => {
+                const card = document.createElement('div');
+                card.className = 'app-card';
+                card.innerHTML = `
+                    <div class="app-main-info">
+                        <div class="app-icon">${app.icon || '📦'}</div>
+                        <div class="app-details">
+                            <h2 class="app-title">${app.title}</h2>
+                            <div class="app-developer">${app.developer} • Пользовательский мод</div>
+                            <a href="${app.url}" target="_blank" class="download-btn">Установить</a>
+                        </div>
+                    </div>
+                    <div class="app-description"><strong>Описание:</strong> ${app.description || 'Нет описания.'}</div>
+                `;
+                
+                if(app.category === 'games') { gameContainer.appendChild(card); } 
+                else { progContainer.appendChild(card); }
+            });
+        }
+
+        function publishApp() {
+            const title = document.getElementById('new-app-title').value.trim();
+            const dev = document.getElementById('new-app-dev').value.trim() || currentUser.username;
+            const url = document.getElementById('new-app-url').value.trim();
+            const desc = document.getElementById('new-app-desc').value.trim();
+            const icon = document.getElementById('new-app-icon').value.trim() || '📦';
+            const category = document.getElementById('new-app-category').value;
+
+            if(!title || !url) { alert('Заполните название и ссылку!'); return; }
+
+            const newApp = { title: title, developer: dev, url: url, description: desc, icon: icon, category: category };
+            
+            // Добавляем в начало массива
+            CUSTOM_APPS.unshift(newApp);
+            
+            // МГНОВЕННОЕ ЖЕСТКОЕ СОХРАНЕНИЕ В БРАУЗЕР (чтобы не пропало!)
+            localStorage.setItem('market_local_apps', JSON.stringify(CUSTOM_APPS));
+            
+            renderCustomApps();
+
+            // Чистим поля формы
+            document.getElementById('new-app-title').value = '';
+            document.getElementById('new-app-url').value = '';
+            document.getElementById('new-app-desc').value = '';
+            document.getElementById('new-app-icon').value = '';
+
+            alert('🔥 Приложение успешно сохранено в память браузера навсегда! Чтобы переслать этот софт другу, не забудь нажать "Скачать обновленный HTML".');
+        }
+
+        function saveCodeToFile() {
+            let currentFullCode = document.documentElement.outerHTML;
+            const appsJsonString = JSON.stringify(CUSTOM_APPS, null, 4);
+            const regex = /var CUSTOM_APPS = \[\s*\];|var CUSTOM_APPS = \[[\s\S]*?\];/;
+            let updatedCode = "<!DOCTYPE html>\n<html lang=\"ru\">\n" + currentFullCode.replace(regex, `var CUSTOM_APPS = ${appsJsonString};`) + "\n</html>";
+
+            const blob = new Blob([updatedCode], { type: 'text/html' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'android_market.html';
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
+        }
+
+        /* ПОИСК */
+        function searchApps() {
+            const query = document.getElementById('market-search').value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.app-card');
+            const catBlock = document.getElementById('main-category-block');
+            
+            if (query.length > 0) {
+                catBlock.style.display = 'none';
+                document.querySelectorAll('.market-list-category').forEach(c => c.classList.add('active'));
+            } else {
+                catBlock.style.display = 'flex';
+                let activeCat = document.getElementById('cat-btn-programs').classList.contains('active') ? 'programs' : 'games';
+                switchCategory(activeCat);
+            }
+
+            cards.forEach(card => {
+                const title = card.querySelector('.app-title').textContent.toLowerCase();
+                card.style.display = title.includes(query) ? 'block' : 'none';
+            });
+        }
+    </script>
+
+
+</body></html>
+</html>
